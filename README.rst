@@ -47,3 +47,18 @@ Features
 * If developing on your local computer before deploying, you can run
   *application_server.py* directly to mount and test an identical local version
   of the server.
+
+Tips
+----
+
+* Add SSL certs from *Let's Encrypt*, then utilize CherryPy session management
+  to implement secure logins.
+
+* Clone this to a bare repository in your user folder, then pull directly into
+  the server domain folder whenever there are any updates to avoid
+  batch-replacing files.
+
+* Develop as much as possible in the client-side JavaScript application to
+  minimize overhead on the WSGI interface (especially as your application
+  scales); identify client-server data interfaces explicitly by exposing
+  non-static methods in the *Server* object.
