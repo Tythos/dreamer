@@ -25,7 +25,7 @@ def public(path):
     return flask.send_from_directory(MOD_ROOT + "/public", path)
     
 @APP.route("/test")
-def test(self):
+def test():
     """
     """
     return "This is a test"
