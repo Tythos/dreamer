@@ -10,4 +10,4 @@ INTERP = os.path.abspath(os.path.expanduser("~/opt/python-3.6.2/bin/python3"))
 if sys.executable != INTERP:
     os.execl(INTERP, INTERP, *sys.argv)
 
-from application_server import application
+from application_server import APP as application
