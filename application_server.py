@@ -4,41 +4,39 @@
 """
 
 import os
-import csv
 import sys
-import random
-import cherrypy
+import flask
+from gevent import pywsgi
 
-class Server(object):
-    """CherryMy points can be identified in this object for non-static routing.
-       *test()* is included as an example.
+MOD_ROOT, _ = os.path.split(os.path.abspath(__file__))
+_, MOD_NAME = os.path.split(MOD_ROOT)
+application = flask.Flask(MOD_NAME)
+
+@flask.route("/")
+def index():
     """
+    """
+    return flask.send_file(MOD_ROOT + "/public/index.html")
 
-    @cherrypy.expose
-    def test(self):
-        """
-        """
-        yield "This is a test"
+@flask.route("/<path:path>")
+def public():
+    """
+    """
+    return flask.send_from_directory(MOD_ROOT + "/public", path)
+    
+@flask.route("/test")
+def test(self):
+    """
+    """
+    return "This is a test"
 
-# define module-level *application* symbol for Passenger WSGI mounting
-application = cherrypy.Application(Server(), config={
-    "/": {
-        "tools.sessions.on": True
-    }
-})
+def main():
+    """
+    """
+    address = ("127.0.0.1", 8765)
+    print("Starting %s client at %s:%u" % (MOD_NAME, address[0], address[1]))
+    pywsgi.WSGIServer(address, application).serve_forever()
 
-# define scripted execution for alternate local testing mode
 if __name__ == "__main__":
-    cherrypy.tree.graft(application, "/")
-    cherrypy.config.update({
-        "global": {
-            "server.socket_host": "127.0.0.1",
-            "server.socket_port": 8000,
-            "tools.staticdir.on": True,
-            "tools.staticdir.dir": os.path.abspath("public"),
-            "tools.staticdir.index": "index.html"
-        }
-    })
-    cherrypy.engine.signals.subscribe()
-    cherrypy.engine.start()
-    cherrypy.engine.block()
+    main()
+
