@@ -19,7 +19,7 @@ def index():
     return flask.send_file(MOD_ROOT + "/public/index.html")
 
 @APP.route("/<path:path>")
-def public():
+def public(path):
     """
     """
     return flask.send_from_directory(MOD_ROOT + "/public", path)
